@@ -1,32 +1,16 @@
 pipeline {
-    agent any
+    agent { dockerfile true }
     stages {
-        stage('Clean Up') {
-            steps {
-                echo 'Cleaning up...'
-                deleteDir()
-            }
-        }
-        stage('Clone Repository') {
-            steps {
-                echo 'Cloning repository...'
-                sh 'git clone https://github.com/jenkins-docs/simple-java-maven-app.git'
-            }
-        }
         stage('Build') {
             steps {
-                echo 'Building...'
-                dir('simple-java-maven-app') {
-                    sh 'mvn clean install'
-                }
+                sh 'docker build -t my-app-build -f Dockerfile.build .'
+                sh 'docker run my-app-build'
             }
         }
-        stage('Test') {
+        stage('Deploy') {
             steps {
-                echo 'Testing...'
-                dir('simple-java-maven-app') {
-                    sh 'mvn test'
-                }
+                sh 'docker build -t my-app-deploy -f Dockerfile.deploy .'
+                sh 'docker run my-app-deploy'
             }
         }
     }

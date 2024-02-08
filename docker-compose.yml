@@ -16,10 +16,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  deployment-agent:
-    build:
-      context: ./deployment-agent
-    container_name: deployment-agent
+  # deployment-agent:
+  #   build:
+  #     context: ./deployment-agent
+  #   container_name: deployment-agent
 
 volumes:
   jenkins_home:
