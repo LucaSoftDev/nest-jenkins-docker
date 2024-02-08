@@ -1,17 +1,13 @@
-# Use a base image with the necessary build tools and dependencies
+# Use an official Node.js runtime as the base image
 FROM node:20
 
-# Install build dependencies, replace with actual package manager commands
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    git \
-    # Add other build dependencies as needed \
-    && rm -rf /var/lib/apt/lists/*
+# Set the working directory in the container to /app
+WORKDIR /app
 
-# Set working directory
-WORKDIR /workspace
+# Install the application dependencies
+# Note: This is done before copying the rest of the application code to take advantage of Docker layer caching and speed up build times
+COPY package*.json ./
+RUN npm install
 
-# (Optional) You can add more setup steps if needed
-
-# Define an entry point or CMD if necessary
-# CMD ["your_command"]
+# Make port 3000 available to the outside of the container
+EXPOSE 3000
