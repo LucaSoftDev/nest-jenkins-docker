@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+  build-agent:
+    build:
+      context: ./build-agent
+    container_name: build-agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  deployment-agent:
+    build:
+      context: ./deployment-agent
+    container_name: deployment-agent
+
+volumes:
+  jenkins_home:
